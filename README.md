@@ -30,15 +30,16 @@ Data partitioning is performed using a partitioning algorithm which is configure
  Cassandra partitions data across the
 cluster using consistent hashing but uses an order preserving hash function to do so.
 
+![image](./media/pk.png)
 ## Replication
 Cassandra achieves high availability and durability through replication. Each data item is duplicated on N hosts, with N 36 being the “per-instance” replication factor. A coordinator node is given to each key, k. (described in the previous section). The coordinator is in charge of replicating the data items within his or her range. The coordinator not only stores each key within its range locally, but also replicates them at the N-1 nodes in the ring.
-
+![image](./media/replication.png)
 ##  Failure Detection
 Failure detection is a mechanism by which a node can locally
 determine if any other node in the system is up or down. In
 Cassandra failure detection is also used to avoid attempts
 to communicate with unreachable nodes during various operations. 
-
+![image](./media/Failure.png)
 ## Bootstrapping
 When a node initially starts, it selects a random token to represent its location in the ring. The mapping is persisted to disk locally and in Zookeeper for fault tolerance.
 After that, the token information is sent around the cluster.
@@ -56,3 +57,5 @@ For data durability, the Cassandra system uses the local file system. The inform
 We have a separate drive for the commit log on each machine since all commit log writes are sequential and we want to maximize disk throughput.
 The in-memory data structure dumps itself to disk when it reaches a specific threshold, which is computed depending on data size and number of objects.
 This write is done on one of the numerous commodity drives that come standard with computers. All writes to disk are sequential, and an index is created based on the row key for efficient lookup.
+![image](./media/read.png)
+![image](./media/write.png)
